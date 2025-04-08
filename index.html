@@ -35,7 +35,8 @@
 
       const renderStudents = () =>  {
         const studentsHtml = students.map((student) => {
-         return `<li><span>${student.name}</span><button>удалить</button></li>`
+          const gender = student.isMale ? "мужчина" : "женщина";
+         return `<li><span>${student.name} - ${gender}, возраст: ${student.age} </span><button>удалить</button></li>`
       }).join("");
 
       list.innerHTML = studentsHtml;
