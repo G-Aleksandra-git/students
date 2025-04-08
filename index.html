@@ -13,12 +13,12 @@
       <li><span>Люси</span><button>удалить</button></li>
     </ul>
 
-    <div>
-      <h3>Форма добавления</h3>
+    <div id="form-container">
+      <!-- <h3>Форма добавления</h3> -->
       Имя:
       <input type="text" id="field" />
       <br /><br />
-      <button type="button" id="add">Добавить</button>
+      <button type="button" id="add">Добавить</button> 
     </div>
 
     <script>
@@ -39,11 +39,27 @@
          return `<li><span>${student.name} - ${gender}, возраст: ${student.age} </span><button>удалить</button></li>`
       }).join("");
 
-      list.innerHTML = studentsHtml;
-      }
+        list.innerHTML = studentsHtml;
+      };
 
       renderStudents(); 
 
+      // Функция рендеринга заголовка "Форма добавления"
+      const renderFormTitle = () => {
+        const formContainer = document.getElementById("form-container");
+        const formTitle = document.createElement("h3");
+        formTitle.textContent = "Форма добавления";
+        
+        // Добавляем обработчик клика на заголовок
+        formTitle.addEventListener("click", () => {
+          console.log("клик на заголовок");
+        });
+
+        formContainer.insertBefore(formTitle, formContainer.firstChild); // Добавляем заголовок в начало контейнера
+      };
+
+      renderFormTitle(); // Рендерим заголовок после рендеринга студентов
+      
       button.addEventListener("click", () => {
         input.classList.remove("error");
 
