@@ -27,6 +27,22 @@
       const removeButton = document.getElementById("remove");
       const input = document.getElementById("field");
 
+      const students = [
+        { name: "Глеб", isMale: true, age: 20 },
+        { name: "Иван", isMale: true, age: 22 },
+        { name: "Люси", isMale: false, age: 19 }
+      ];
+
+      const renderStudents = () =>  {
+        const studentsHtml = students.map((student) => {
+         return `<li><span>${student.name}</span><button>удалить</button></li>`
+      }).join("");
+
+      list.innerHTML = studentsHtml;
+      }
+
+      renderStudents(); 
+
       button.addEventListener("click", () => {
         input.classList.remove("error");
 
@@ -34,12 +50,14 @@
           input.classList.add("error");
           return;
         }
+        students.push({name: input.value});
+        renderStudents();
 
-        const oldHtml = list.innerHTML;
-        list.innerHTML =
-          oldHtml +
-          `<li><span>${input.value}</span><button>удалить</button></li>`;
-        input.value = "";
+        // const oldHtml = list.innerHTML;
+        // list.innerHTML =
+        //   oldHtml +
+        //   `<li><span>${input.value}</span><button>удалить</button></li>`;
+         input.value = "";
       });
     </script>
   </body>
