@@ -18,13 +18,12 @@
       Имя:
       <input type="text" id="field" />
       <br /><br />
-      <button type="button" id="add">Добавить</button> 
+      <button type="button" id="add">Добавить</button>
     </div>
 
     <script>
       const button = document.getElementById("add");
       const list = document.getElementById("list");
-      const removeButton = document.getElementById("remove");
       const input = document.getElementById("field");
 
       const students = [
@@ -33,16 +32,48 @@
         { name: "Люси", isMale: false, age: 19 }
       ];
 
-      const renderStudents = () =>  {
-        const studentsHtml = students.map((student) => {
-          const gender = student.isMale ? "мужчина" : "женщина";
-         return `<li><span>${student.name} - ${gender}, возраст: ${student.age} </span><button>удалить</button></li>`
-      }).join("");
+      const InitDeleteListeners = () => {
+        const buttonElements = document.querySelectorAll(".delete");
 
-        list.innerHTML = studentsHtml;
+        for (const buttonElement of buttonElements) {
+          buttonElement.addEventListener("click", () => {
+            const index = buttonElement.dataset.index;
+
+            students.splice(index, 1);
+            renderStudents();
+          });
+        }        
       };
 
-      renderStudents(); 
+
+      // Функция рендеринга студентов
+      const renderStudents = () => {
+        const studentsHtml = students
+          .map((student, index) => {
+            // Добавляем data-атрибут с возрастом
+            return `<li><span data-age="${student.age}" data-index="${index}">${student.name} - ${student.isMale ? "мужчина" : "женщина"}, ${student.age} лет</span><button class="delete" data-index="${index}">удалить</button></li>`;
+          })
+          .join("");
+        list.innerHTML = studentsHtml;
+
+        initClickStudents(); // Для кликов по именам студентов
+        InitDeleteListeners(); // Для кликов по кнопке удаления
+        
+      };
+
+      // Функция инициализации обработчика кликов на студентах
+      const initClickStudents = () => {
+        const studentSpans = document.querySelectorAll("li span");
+
+        studentSpans.forEach((span) => {
+          span.addEventListener('click', (event) => {
+            const studentAge = event.target.getAttribute("data-age"); // Извлекаем возраст из data-атрибута
+            console.log(`Возраст: ${studentAge}`);
+          });
+        });
+      };
+
+      renderStudents();
 
       // Функция рендеринга заголовка "Форма добавления"
       const renderFormTitle = () => {
@@ -59,7 +90,8 @@
       };
 
       renderFormTitle(); // Рендерим заголовок после рендеринга студентов
-      
+
+      // Обработчик для добавления нового студента
       button.addEventListener("click", () => {
         input.classList.remove("error");
 
@@ -67,14 +99,12 @@
           input.classList.add("error");
           return;
         }
-        students.push({name: input.value});
+
+        // Добавление студента с дефолтными данными
+        students.push({ name: input.value, isMale: true, age: 18 });
         renderStudents();
 
-        // const oldHtml = list.innerHTML;
-        // list.innerHTML =
-        //   oldHtml +
-        //   `<li><span>${input.value}</span><button>удалить</button></li>`;
-         input.value = "";
+        input.value = "";
       });
     </script>
   </body>
